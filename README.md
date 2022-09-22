@@ -66,6 +66,26 @@ Where:
 
 The resulting .whl files will be generated in `server/pypi/dist`.
 
+## Building Unispectral SDK for Android
+
+1. Create `server/pypi/dist` folder, download sdk requirements from [Chaquopy Repo](https://chaquo.com/pypi-7.0/)
+
+```
+server/pypi/dist
+|----matplotlib
+|--------matplotlib-3.1.2-1-cp38-cp38-android_21_arm64_v8a.whl
+|----scipy
+|--------scipy-1.4.1-0-cp38-cp38-android_21_arm64_v8a.whl
+...
+```
+
+2. Download Unispectral sources, put in folder `server/pypi/packages/unispectral/src`
+
+3. Run docker cmd to build whl package
+```shell
+docker run -v 'absolute path to server/pypi/dist':/root/pypi/dist -v 'absolute path to server/pypi/packages':/root/pypi/packages build-wheel --toolchain target/toolchains/<abi> unispectral
+```
+
 
 # Building without Docker
 
