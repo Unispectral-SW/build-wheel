@@ -30,7 +30,7 @@ RUN wget https://static.rust-lang.org/rustup/dist/x86_64-unknown-linux-gnu/rustu
 ENV PATH="/root/.cargo/bin:$PATH"
 
 COPY requirements.txt pypi/
-RUN pip3 install -r pypi/requirements.txt
+RUN pip3 install -i https://pypi.tuna.tsinghua.edu.cn/simple -r pypi/requirements.txt
 
 COPY . pypi/
 ENV LC_ALL="C.UTF-8"

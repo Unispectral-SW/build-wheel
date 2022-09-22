@@ -120,7 +120,7 @@ class BuildWheel:
 
         build_reqs = self.get_requirements("build")
         if build_reqs:
-            run(f"{self.pip} install{' -v' if self.verbose else ''} " +
+            run(f"{self.pip} install -i https://pypi.tuna.tsinghua.edu.cn/simple{' -v' if self.verbose else ''} " +
                 " ".join(f"{name}=={version}" for name, version in build_reqs))
 
         self.version_dir = f"{self.package_dir}/build/{self.version}"
@@ -241,7 +241,7 @@ class BuildWheel:
         if sdist_filename:
             log("Using cached sdist")
         else:
-            result = run(f"{self.pip} download{' -v' if self.verbose else ''} --no-deps "
+            result = run(f"{self.pip} download -i https://pypi.tuna.tsinghua.edu.cn/simple{' -v' if self.verbose else ''} --no-deps "
                          f"--no-binary {self.package} --no-build-isolation "
                          f"{self.package}=={self.version}", check=False)
             if result.returncode:
@@ -299,6 +299,7 @@ class BuildWheel:
 
         for package, version in reqs:
             dist_dir = f"{PYPI_DIR}/dist/{normalize_name_pypi(package)}"
+            print(dist_dir)
             matches = []
             if exists(dist_dir):
                 for filename in os.listdir(dist_dir):
@@ -349,6 +350,7 @@ class BuildWheel:
         prefix_dir = f"{self.build_dir}/prefix"
         ensure_empty(prefix_dir)
         os.environ["PREFIX"] = ensure_dir(f"{prefix_dir}/chaquopy")  # Conda variable name
+        print(f'build_script={build_script}')
         run(build_script)
         return self.package_wheel(prefix_dir, self.src_dir)
 
@@ -560,6 +562,7 @@ class BuildWheel:
         log(f"Toolchain ABI: {self.abi}, API level: {self.api_level}")
 
     def fix_wheel(self, in_filename):
+        print(f'fix_wheel: {in_filename}')
         tmp_dir = f"{self.build_dir}/fix_wheel"
         ensure_empty(tmp_dir)
         run(f"unzip -d {tmp_dir} -q {in_filename}")
@@ -606,6 +609,7 @@ class BuildWheel:
             if fixed_path != original_path:
                 run(f"mv {original_path} {fixed_path}")
 
+            print(f'fixed_path={fixed_path}')
             run(f"chmod +w {fixed_path}")
             run(f"{os.environ['STRIP']} --strip-unneeded {fixed_path}")
 
@@ -614,6 +618,7 @@ class BuildWheel:
                 # Paths from the build machine will be useless at runtime, unless they
                 # use $ORIGIN, but that isn't supported until API level 24
                 # (https://github.com/aosp-mirror/platform_bionic/blob/master/android-changes-for-ndk-developers.md).
+                print(f'remove_rpath: fixed_path={fixed_path}')
                 run(f"patchelf --remove-rpath {fixed_path}")
 
         reqs.update(self.get_requirements("host"))

@@ -1,0 +1,21 @@
+package:
+  name: unispectral
+  version: 0.0.1
+
+source:
+  path: src
+
+requirements:
+  build:
+    - cython 0.29.14
+    - setuptools-cythonize 1.0.7
+  host:
+    - python
+    - scikit-learn 0.24.1
+    - scikit-image 0.18.3
+    - numpy 1.19.5
+    - opencv-python 4.5.1.48
+    - matplotlib 3.1.2
+
+about:
+  license_file: src/unispectral/LICENSE

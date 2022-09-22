@@ -29,10 +29,6 @@ RUN apt-get update && \
 
 # Copy Python headers and libraries into the toolchains.
 COPY unpackage-target.sh target/
-RUN mkdir maven && \
-    repo="https://chaquo.com/maven" && version="3.8.6-0" && \
-    for abi in $(cd target/toolchains && echo *); do \
-        wget -P maven $repo/com/chaquo/python/target/$version/target-$version-$abi.zip; \
-    done && \
-    target/unpackage-target.sh maven target/toolchains && \
+COPY abis/ maven/
+RUN target/unpackage-target.sh maven target/toolchains && \
     rm -r maven
