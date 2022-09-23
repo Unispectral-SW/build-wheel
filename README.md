@@ -81,11 +81,11 @@ server/pypi/dist
 
 2. Download Unispectral sources, put in folder `server/pypi/packages/unispectral/src`
 
-3. Run docker cmd to build whl package
+3. Run docker cmd to build whl package, change volumes mapping in build_sdk.bat or build_sdk.sh, then run cmd
 ```shell
-docker run -v 'absolute path to server/pypi/dist':/root/pypi/dist -v 'absolute path to server/pypi/packages':/root/pypi/packages build-wheel --toolchain target/toolchains/<abi> unispectral
+# windows
+./build_sdk.bat
 ```
-
 
 # Building without Docker
 

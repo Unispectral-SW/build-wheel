@@ -18,4 +18,4 @@ requirements:
     - matplotlib 3.1.2
 
 about:
-  license_file: src/unispectral/LICENSE
+  license_file: unispectral/LICENSE
